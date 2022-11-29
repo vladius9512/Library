@@ -23,7 +23,7 @@ body{
     width: 80vw;
 }
 
-.books-container {
+#booksContainer {
     display:grid;
     grid-template-rows: 100px 1fr;
     justify-content: center;
@@ -85,6 +85,52 @@ input {
 }
 
 #btn:hover {
+    background-color: #2a8074;
+    transition-duration: 0.2s;
+}
+
+.removeBook {
+    width: 280px;
+    border: none;
+    padding: 5px;
+    border-radius: 8px;
+    align-self:center;
+    margin: 5px;
+}
+
+.removeBook:hover {
+    background-color: #ca3455;
+    transition-duration: 0.2s;
+}
+
+.checkBook {
+    width: 280px;
+    border: none;
+    padding: 5px;
+    border-radius: 8px;
+    align-self:center;
+    margin: 5px;
+}
+
+.checkBook:hover {
+    background-color: #2a8074;
+    transition-duration: 0.2s;
+}
+
+.checkBook.Read {
+    background-color: #2a8074;
+}
+
+.checkBook.Read:hover {
+    background-color: #ca3455;
+    transition-duration: 0.2s;
+}
+
+.checkBook.notRead {
+    background-color: #ca3455;
+}
+
+.checkBook.notRead:hover {
     background-color: #2a8074;
     transition-duration: 0.2s;
 }
