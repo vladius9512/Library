@@ -1,4 +1,4 @@
-let myLibrary = [];
+let myLibrary = {};
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -8,21 +8,15 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary(book) {
-    myLibrary.push(book);
+    myLibrary[book.title] = book;
 }
 
-const lord = new Book('Lord of the rings','Tolkien','1000','true');
-const lord1 = new Book('Lord of the rings','Tolkien','1000','false');
-const lord2 = new Book('Lord of the rings','Tolkien','1000','true');
-
-addBookToLibrary(lord);
-addBookToLibrary(lord1);
-addBookToLibrary(lord2);
 
 const booksGrid = document.getElementById("books-grid");
 const addBtn = document.getElementById('btn');
 const overlayDiv = document.getElementById('overlay');
 const formDiv = document.getElementById('addBookForm');
+const form = document.getElementById('form');
 const submitBtn = document.getElementById('sendBtn');
 const titleInp = document.getElementById('title');
 const authorInp = document.getElementById('author');
@@ -44,6 +38,14 @@ booksContainer.addEventListener('click', (e) =>{
         target.classList.add('Read');
         target.innerText = 'Read';
     }
+    if(target.classList.contains('removeBook'))
+    {
+        const bookTitle = target.dataset.bookTitle;
+        delete myLibrary[bookTitle];
+        const bookCard = target.parentElement;
+        console.log(bookCard);
+        booksGrid.removeChild(bookCard);
+    }
 });
 
 addBtn.addEventListener('click', () => {
@@ -62,6 +64,17 @@ overlayDiv.addEventListener('click', (e) =>{
 
 
 submitBtn.addEventListener('click', (e) =>{
+    if(myLibrary.hasOwnProperty(titleInp.value)){
+        window.alert("A book with this title is already in the library");
+        e.preventDefault();
+        return;
+    }
+    if(titleInp.value === "" || authorInp.value === "" || pagesInp.value === "")
+    {
+        window.alert("Complete all the fields please!")
+        e.preventDefault();
+        return;
+    }
     let newBook = new Book(titleInp.value, authorInp.value, pagesInp.value, readCheck.checked);
     addBookToLibrary(newBook);
     let bookDiv = document.createElement("div");
@@ -84,6 +97,7 @@ submitBtn.addEventListener('click', (e) =>{
     }
     let bookBtn = document.createElement('button');
     bookBtn.classList.add('removeBook');
+    bookBtn.dataset.bookTitle = newBook.title;
     bookBtn.innerText = 'Remove book';
     bookDiv.appendChild(bookTitle);
     bookDiv.appendChild(bookAuthor);
@@ -93,39 +107,6 @@ submitBtn.addEventListener('click', (e) =>{
     booksGrid.appendChild(bookDiv);
     formDiv.classList.remove('active');
     overlayDiv.classList.remove('active');
+    form.reset();
     e.preventDefault();
 });
-
-const displayBook = function () {
-    myLibrary.forEach(element => {
-        let bookDiv = document.createElement("div");
-        bookDiv.classList.add("book");
-        let bookTitle = document.createElement("p");
-        bookTitle.innerText = element.title;
-        let bookAuthor = document.createElement("p");
-        bookAuthor.innerText = element.author;
-        let bookPages = document.createElement("p");
-        bookPages.innerText = element.pages;
-        let checkBtn = document.createElement('button');
-        checkBtn.classList.add('checkBook');
-        if(element.read === 'true'){
-            checkBtn.innerText = 'Read';
-            checkBtn.classList.add('Read');
-        }
-        else{
-            checkBtn.innerText = 'Not read';
-            checkBtn.classList.add('notRead');
-        }
-        let bookBtn = document.createElement('button');
-        bookBtn.classList.add('removeBook');
-        bookBtn.innerText = 'Remove book';
-        bookDiv.appendChild(bookTitle);
-        bookDiv.appendChild(bookAuthor);
-        bookDiv.appendChild(bookPages);
-        bookDiv.appendChild(checkBtn);
-        bookDiv.appendChild(bookBtn);
-        booksGrid.appendChild(bookDiv);
-    });
-}
-
-displayBook();
